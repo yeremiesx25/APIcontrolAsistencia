@@ -32,10 +32,11 @@ namespace APIcontrolAsistencia.Controllers
                         while (reader.Read()) {
                             usuarioLista.Add(new usuario() {
                                 DNI = Convert.ToInt32(reader["DNI"]),
+                                CONTRASENA = reader["CONTRASENA"].ToString(),
                                 Nombres = reader["Nombres"].ToString(),
                                 Apellidos = reader["Apellidos"].ToString(),
                                 Email = reader["Email"].ToString(),
-                                Telefono = Convert.ToInt32(reader["Telefono"]),
+                                Telefono = reader["Telefono"].ToString(),
                                 InicioDePracticas = Convert.ToDateTime(reader["InicioDePracticas"]),
                                 TipoDeUsuario = Convert.ToInt32(reader["TipoDeUsuario"])
                             });
