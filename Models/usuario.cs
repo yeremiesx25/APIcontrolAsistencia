@@ -5,7 +5,7 @@ namespace APIcontrolAsistencia.Models
 {
     public class usuario
     {
-        public int dni { get; set; }
+        public int DNI { get; set; }
 
         public string CONTRASENA { get; set; }
         public string Nombres { get; set; }
