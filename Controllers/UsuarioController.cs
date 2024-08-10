@@ -6,9 +6,11 @@ using APIcontrolAsistencia.Models;
 using System.Data;
 using System.Data.SqlClient;
 using System.Net;
+using Microsoft.AspNetCore.Cors;
 
 namespace APIcontrolAsistencia.Controllers
 {
+    [EnableCors("ReglasCors")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : ControllerBase
