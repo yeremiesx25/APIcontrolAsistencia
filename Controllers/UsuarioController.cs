@@ -45,7 +45,7 @@ namespace APIcontrolAsistencia.Controllers
                         }
                     }
                 }
-                return StatusCode(StatusCodes.Status200OK, new {mensaje = "ok", response = usuarioLista});
+                return StatusCode(StatusCodes.Status200OK, new {mensaje = "Mostrar Lista", response = usuarioLista});
             
             }catch(Exception error) {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = usuarioLista });
@@ -109,7 +109,7 @@ namespace APIcontrolAsistencia.Controllers
                 {//conectando a la base de datos
                     conexion.Open();//iniciando
                     var cmd = new SqlCommand("SP_CrearUsuario", conexion);//llamando al store
-                    cmd.Parameters.AddWithValue("DNI", objeto.DNI);
+                    cmd.Parameters.AddWithValue("DNI", objeto.DNI);//dando que la instancia se llama con el objeto
                     cmd.Parameters.AddWithValue("CONTRASENA", objeto.CONTRASENA);
                     cmd.Parameters.AddWithValue("Nombres", objeto.Nombres);
                     cmd.Parameters.AddWithValue("Apellidos", objeto.Apellidos);
@@ -153,7 +153,7 @@ namespace APIcontrolAsistencia.Controllers
                     cmd.Parameters.AddWithValue("TipoDeUsuario", objeto.TipoDeUsuario == 0 ? DBNull.Value : objeto.TipoDeUsuario);
                     cmd.CommandType = CommandType.StoredProcedure;//diciendo que es un store
 
-                    cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();//lee y ejecuta el PROCEDURE
                 }
 
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "Editado Correctamente" });
