@@ -51,10 +51,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
+app.UseRouting();
+
 app.UseCors(misReglasCors);
 
-app.UseMvc();
-
+app.UseAuthentication(); // Agregar autenticación antes de autorización
 app.UseAuthorization();
 
 app.MapControllers();

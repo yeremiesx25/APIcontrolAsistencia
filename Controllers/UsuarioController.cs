@@ -7,11 +7,13 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Net;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace APIcontrolAsistencia.Controllers
 {
     [EnableCors("ReglasCors")]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UsuarioController : ControllerBase
     {
