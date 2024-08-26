@@ -22,7 +22,7 @@ namespace APIcontrolAsistencia.Controllers
         }
 
         [HttpGet]//obtener
-        [Route("MostrarUsuario")]
+        [Route("MostrarUsuario")]//Aqui se mostrara usuario
         public IActionResult MostrarUsuario() { 
             List<usuario> usuarioLista = new List<usuario>();
             try {
