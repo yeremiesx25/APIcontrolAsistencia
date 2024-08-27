@@ -155,7 +155,7 @@ namespace APIcontrolAsistencia.Controllers
                     cmd.Parameters.AddWithValue("TipoDeUsuario", objeto.TipoDeUsuario == 0 ? DBNull.Value : objeto.TipoDeUsuario);
                     cmd.CommandType = CommandType.StoredProcedure;//diciendo que es un store
 
-                    cmd.ExecuteNonQuery();//lee y ejecuta el PROCEDURE
+                    cmd.ExecuteNonQuery();//lee y ejecuta el PROCEDUREaa
                 }
 
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "Editado Correctamente" });
