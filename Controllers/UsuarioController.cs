@@ -66,7 +66,7 @@ namespace APIcontrolAsistencia.Controllers
             try
             {
                 using (var conexion = new SqlConnection(cadenaSQL))
-                {//conectando a la base de datos
+                {//conectando a la base de datoss
                     conexion.Open();//iniciando
                     var cmd = new SqlCommand("SP_USUARIO", conexion);//llamando al store
                     cmd.CommandType = CommandType.StoredProcedure;//diciendo que es un store
