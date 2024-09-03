@@ -155,7 +155,7 @@ namespace APIcontrolAsistencia.Controllers
                     cmd.Parameters.AddWithValue("TipoDeUsuario", objeto.TipoDeUsuario == 0 ? DBNull.Value : objeto.TipoDeUsuario);
                     cmd.CommandType = CommandType.StoredProcedure;//diciendo que es un store
 
-                    cmd.ExecuteNonQuery();//lee y ejecuta el PROCEDUREaa
+                    cmd.ExecuteNonQuery();//lee y ejecuta el PROCEDURE
                 }
 
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "Editado Correctamente" });
@@ -165,6 +165,54 @@ namespace APIcontrolAsistencia.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message });
 
+            }
+        }
+
+
+        //validar usuario
+        //Crear Usuario
+        [HttpPost]
+        [Route("ValUser")]
+        public IActionResult ValUsuario([FromBody] usuario objeto)
+        {
+            try
+            {
+                using (var conexion = new SqlConnection(cadenaSQL))
+                {
+                    conexion.Open();
+                    var cmd = new SqlCommand("SP_ValidarAdmin", conexion);
+                    cmd.Parameters.AddWithValue("pDNI", objeto.DNI);
+                    cmd.Parameters.AddWithValue("pclave", objeto.CONTRASENA);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Usa el método IsDBNull para verificar antes de convertir
+                            var AdmminValido = reader.IsDBNull(reader.GetOrdinal("AdminValido"))
+                                               ? 0
+                                               : Convert.ToInt32(reader["AdminValido"]);
+
+                            if (AdmminValido == 1)
+                            {
+                                return StatusCode(StatusCodes.Status200OK, new { mensaje = AdmminValido });
+                            }
+                            else
+                            {
+                                return StatusCode(StatusCodes.Status401Unauthorized, new { mensaje = AdmminValido });
+                            }
+                        }
+                        else
+                        {
+                            return StatusCode(StatusCodes.Status401Unauthorized, new { mensaje = 0 });
+                        }
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message });
             }
         }
 
