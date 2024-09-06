@@ -15,6 +15,7 @@ namespace APIcontrolAsistencia.Models
         public DateTime InicioDePracticas { get; set; }
         public int DepartmentID { get; set; }
         public int TipoDeUsuario { get; set; }
+        public string Universidad { get; set; }
 
     }
 }

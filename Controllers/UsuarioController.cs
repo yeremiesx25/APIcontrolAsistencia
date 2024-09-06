@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Net;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace APIcontrolAsistencia.Controllers
 {
@@ -42,7 +43,7 @@ namespace APIcontrolAsistencia.Controllers
                                 Email = reader["Email"].ToString(),
                                 Telefono = reader["Telefono"].ToString(),
                                 InicioDePracticas = Convert.ToDateTime(reader["InicioDePracticas"]),
-                                TipoDeUsuario = Convert.ToInt32(reader["TipoDeUsuario"])
+                                Universidad = reader["Universidad"].ToString()
                             });
                         }
                     }
@@ -119,6 +120,7 @@ namespace APIcontrolAsistencia.Controllers
                     cmd.Parameters.AddWithValue("Telefono", objeto.Telefono);
                     cmd.Parameters.AddWithValue("DepartmentID", objeto.DepartmentID);
                     cmd.Parameters.AddWithValue("TipoDeUsuario", objeto.TipoDeUsuario);
+                    cmd.Parameters.AddWithValue("Universidad", objeto.Universidad);
                     cmd.CommandType = CommandType.StoredProcedure;//diciendo que es un store
                     
                     cmd.ExecuteNonQuery();
@@ -153,6 +155,7 @@ namespace APIcontrolAsistencia.Controllers
                     cmd.Parameters.AddWithValue("Telefono", objeto.Telefono is null ? DBNull.Value : objeto.Telefono);
                     cmd.Parameters.AddWithValue("DepartmentID", objeto.DepartmentID == 0 ? DBNull.Value : objeto.DepartmentID);
                     cmd.Parameters.AddWithValue("TipoDeUsuario", objeto.TipoDeUsuario == 0 ? DBNull.Value : objeto.TipoDeUsuario);
+                    cmd.Parameters.AddWithValue("Universidad", objeto.Universidad is null ? DBNull.Value : objeto.Universidad);
                     cmd.CommandType = CommandType.StoredProcedure;//diciendo que es un store
 
                     cmd.ExecuteNonQuery();//lee y ejecuta el PROCEDURE
@@ -213,6 +216,62 @@ namespace APIcontrolAsistencia.Controllers
             catch (Exception error)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message });
+            }
+        }
+
+
+        //Buscar usuario por dni o apellido
+        [HttpPost]
+        [Route("FilterUsuario")]
+        public IActionResult FilterUsuario([FromBody] usuario objeto)
+        {
+            List<usuario> usuarioLista = new List<usuario>();
+            try
+            {
+                using (var conexion = new SqlConnection(cadenaSQL))
+                {
+                    conexion.Open();
+                    var cmd = new SqlCommand("SP_FilterUsuario", conexion);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Si DNI es 0, lo tratamos como un filtro no aplicable y enviamos NULL
+                    if (objeto.DNI == 0)
+                    { cmd.Parameters.AddWithValue("@DNI", DBNull.Value); }
+                    else
+                    { cmd.Parameters.AddWithValue("@DNI", objeto.DNI); }
+
+                    // Si Apellidos está vacío, lo tratamos como un filtro no aplicable y enviamos NULL
+                    if (string.IsNullOrEmpty(objeto.Apellidos))
+                    { cmd.Parameters.AddWithValue("@APELLIDOS", DBNull.Value); }
+                    else
+                    { cmd.Parameters.AddWithValue("@APELLIDOS", objeto.Apellidos); }
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            usuarioLista.Add(new usuario()
+                            {
+                                DNI = Convert.ToInt32(reader["DNI"]),//tiene que leer lo que sale en la tabla al mostrar
+                                CONTRASENA = reader["CONTRASENA"].ToString(),
+                                Nombres = reader["Nombres"].ToString(),
+                                Apellidos = reader["Apellidos"].ToString(),
+                                Email = reader["Email"].ToString(),
+                                Telefono = reader["Telefono"].ToString(),
+                                InicioDePracticas = Convert.ToDateTime(reader["InicioDePracticas"]),
+                                TipoDeUsuario = Convert.ToInt32(reader["TipoDeUsuario"]),
+                                Universidad = reader["Universidad"].ToString(),
+                            });
+                        }
+                    }
+                }
+                return StatusCode(StatusCodes.Status200OK, new { mensaje = "Mostrar Lista", response = usuarioLista });
+            }
+            catch (Exception error)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = usuarioLista });
             }
         }
 
