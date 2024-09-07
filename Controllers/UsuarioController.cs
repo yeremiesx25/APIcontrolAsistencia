@@ -159,7 +159,7 @@ namespace APIcontrolAsistencia.Controllers
                     cmd.Parameters.AddWithValue("Universidad", objeto.Universidad is null ? DBNull.Value : objeto.Universidad);
                     cmd.CommandType = CommandType.StoredProcedure;//diciendo que es un store
 
-                    cmd.ExecuteNonQuery();//lee y ejecuta el PROCEDURE
+                    cmd.ExecuteNonQuery();//lee y ejecuta el PROCEDURE 
                 }
 
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "Editado Correctamente" });
