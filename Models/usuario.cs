@@ -16,6 +16,7 @@ namespace APIcontrolAsistencia.Models
         public int DepartmentID { get; set; }
         public int TipoDeUsuario { get; set; }
         public string Universidad { get; set; }
+        public string Departamento { get; set; }
 
     }
 }

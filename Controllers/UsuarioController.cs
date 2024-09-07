@@ -43,7 +43,8 @@ namespace APIcontrolAsistencia.Controllers
                                 Email = reader["Email"].ToString(),
                                 Telefono = reader["Telefono"].ToString(),
                                 InicioDePracticas = Convert.ToDateTime(reader["InicioDePracticas"]),
-                                Universidad = reader["Universidad"].ToString()
+                                Universidad = reader["Universidad"].ToString(),
+                                Departamento = reader["Departamento"].ToString()
                             });
                         }
                     }
@@ -263,6 +264,7 @@ namespace APIcontrolAsistencia.Controllers
                                 InicioDePracticas = Convert.ToDateTime(reader["InicioDePracticas"]),
                                 TipoDeUsuario = Convert.ToInt32(reader["TipoDeUsuario"]),
                                 Universidad = reader["Universidad"].ToString(),
+                                Departamento = reader["Departamento"].ToString()
                             });
                         }
                     }

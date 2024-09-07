@@ -7,7 +7,7 @@
         public int ID_PRACTICANTE { get; set; }
         public DateTime FECHA { get; set; }
         public string ENTRADA { get; set; }
-        public DateTime SALIDA { get; set; }
+        public string SALIDA { get; set; }
         public string ESTADO { get; set; }
         public int Contador { get; set; }
 

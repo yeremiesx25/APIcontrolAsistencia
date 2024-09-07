@@ -44,7 +44,8 @@ namespace APIcontrolAsistencia.Controllers
                                     Nombres = reader["NOMBRES"].ToString(),
                                     Apellidos = reader["APELLIDOS"].ToString(),
                                     FECHA = Convert.ToDateTime(reader["FECHA"]),
-                                    ENTRADA = Convert.ToDateTime(reader["ENTRADA"]).ToString("HH:mm")
+                                    ENTRADA = Convert.ToDateTime(reader["ENTRADA"]).ToString("HH:mm"),
+                                    SALIDA = Convert.ToDateTime(reader["SALIDA"]).ToString("HH:mm")
                             });
                         }
                     }
@@ -83,6 +84,49 @@ namespace APIcontrolAsistencia.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message });
 
+            }
+        }
+
+
+        //VER LA ASISTENCIA PERSONAL
+        //Crear Asistencia
+        [HttpPost]//MANDAR
+        [Route("FilterAsistencia")]
+        public IActionResult FilterAsistencia([FromBody] Asistencia objeto)
+        {
+            List<Asistencia> usuarioListaAsistencia = new List<Asistencia>();
+            try
+            {
+                using (var conexion = new SqlConnection(cadenaSQL))
+                {//conectando a la base de datos
+                    conexion.Open();//iniciando
+                    var cmd = new SqlCommand("SP_FilterAsistencia", conexion);//llamando al store
+                    cmd.Parameters.AddWithValue("DNI", objeto.ID_PRACTICANTE);//dando que la instancia se llama con el objeto
+                    cmd.CommandType = CommandType.StoredProcedure;//diciendo que es un store
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            usuarioListaAsistencia.Add(new Asistencia()
+                            {
+                                Contador = Convert.ToInt32(reader["DIAS"]),
+                                ID_PRACTICANTE = Convert.ToInt32(reader["DNI"]),//tiene que leer lo que sale en la tabla al mostrar
+                                Nombres = reader["NOMBRES"].ToString(),
+                                Apellidos = reader["APELLIDOS"].ToString(),
+                                FECHA = Convert.ToDateTime(reader["FECHA"]),
+                                ENTRADA = Convert.ToDateTime(reader["ENTRADA"]).ToString("HH:mm"),
+                                SALIDA = Convert.ToDateTime(reader["SALIDA"]).ToString("HH:mm")
+                            });
+                        }
+                    }
+                }
+
+                return StatusCode(StatusCodes.Status200OK, new { mensaje = "Mostrar Lista", response = usuarioListaAsistencia });
+
+            }
+            catch (Exception error)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = usuarioListaAsistencia });
             }
         }
     }
