@@ -10,6 +10,7 @@ namespace APIcontrolAsistencia.Controllers
 {
     [EnableCors("ReglasCors")]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class MarcarAsistenciaController : ControllerBase
     {
