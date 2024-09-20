@@ -18,7 +18,7 @@ namespace APIcontrolAsistencia.Controllers
 
         public MarcarAsistenciaController(IConfiguration config)
         {
-            cadenaSQL = config.GetConnectionString("CadenaSQL");//conexion con la cadena
+            cadenaSQL = config.GetConnectionString("CadenaSQL");//conexion con la cadenaa
         }
 
         [HttpGet]//obtener
