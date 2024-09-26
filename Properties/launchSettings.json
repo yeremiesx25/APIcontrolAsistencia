@@ -27,7 +27,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
-      "applicationUrl": "http://localhost:80" // Cambia a tu puerto deseado
+      "applicationUrl": "http://localhost:80" // Cambia a tu puerto deseadoa
     }
   }
 }
