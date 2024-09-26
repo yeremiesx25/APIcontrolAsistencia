@@ -10,7 +10,6 @@ namespace APIcontrolAsistencia.Controllers
 {
     [EnableCors("ReglasCors")]
     [Route("api/[controller]")]
-    [Authorize]
     [ApiController]
     public class MarcarAsistenciaController : ControllerBase
     {
@@ -18,7 +17,7 @@ namespace APIcontrolAsistencia.Controllers
 
         public MarcarAsistenciaController(IConfiguration config)
         {
-            cadenaSQL = config.GetConnectionString("CadenaSQL");//conexion con la cadenaa
+            cadenaSQL = config.GetConnectionString("CadenaSQL");//conexion con la cadena
         }
 
         [HttpGet]//obtener

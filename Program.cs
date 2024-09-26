@@ -45,12 +45,21 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage(); // Muestra errores detallados en el entorno de desarrollo
+}
+else
+{
+    app.UseExceptionHandler("/Home/Error"); // Manejo de errores en producción
+    app.UseHsts();
+}
 
 
 app.UseRouting();
